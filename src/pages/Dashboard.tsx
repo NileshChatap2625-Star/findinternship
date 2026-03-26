@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { User, Plus, X, Sparkles, FileText, Bell, Loader2 } from "lucide-react";
+import { User, Plus, X, Sparkles, FileText, Bell, Loader2, Upload } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 
@@ -17,9 +17,42 @@ interface AIRecommendation {
   reason: string;
 }
 
+interface Notification {
+  id: string;
+  message: string;
+  type: string;
+  is_read: boolean;
+  created_at: string;
+}
+
+function timeAgo(dateStr: string) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  return `${days}d ago`;
+}
+
+async function extractTextFromPdf(file: File): Promise<string> {
+  const pdfjsLib = await import("pdfjs-dist");
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  let text = "";
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map((item: any) => item.str).join(" ") + "\n";
+  }
+  return text.trim();
+}
+
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [profile, setProfile] = useState<{ full_name: string; email: string; skills: string[]; resume_text: string }>({
     full_name: "", email: "", skills: [], resume_text: "",
   });
@@ -29,13 +62,18 @@ export default function Dashboard() {
   const [aiLoading, setAiLoading] = useState(false);
   const [resumeAnalysis, setResumeAnalysis] = useState("");
   const [resumeLoading, setResumeLoading] = useState(false);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth");
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    if (user) fetchProfile();
+    if (user) {
+      fetchProfile();
+      fetchNotifications();
+    }
   }, [user]);
 
   const fetchProfile = async () => {
@@ -54,6 +92,16 @@ export default function Dashboard() {
     }
   };
 
+  const fetchNotifications = async () => {
+    const { data } = await supabase
+      .from("notifications")
+      .select("*")
+      .eq("user_id", user!.id)
+      .order("created_at", { ascending: false })
+      .limit(10);
+    if (data) setNotifications(data as Notification[]);
+  };
+
   const addSkill = async () => {
     if (!newSkill.trim()) return;
     const updated = [...profile.skills, newSkill.trim()];
@@ -61,17 +109,47 @@ export default function Dashboard() {
     setProfile({ ...profile, skills: updated });
     setNewSkill("");
     toast.success("Skill added!");
+    // Refresh notifications after profile update
+    setTimeout(fetchNotifications, 500);
   };
 
   const removeSkill = async (skill: string) => {
     const updated = profile.skills.filter((s) => s !== skill);
     await supabase.from("profiles").update({ skills: updated }).eq("user_id", user!.id);
     setProfile({ ...profile, skills: updated });
+    setTimeout(fetchNotifications, 500);
   };
 
   const saveResume = async () => {
     await supabase.from("profiles").update({ resume_text: profile.resume_text }).eq("user_id", user!.id);
     toast.success("Resume saved!");
+    setTimeout(fetchNotifications, 500);
+  };
+
+  const handlePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.type !== "application/pdf") {
+      toast.error("Please upload a PDF file");
+      return;
+    }
+    setPdfLoading(true);
+    try {
+      const text = await extractTextFromPdf(file);
+      if (!text) {
+        toast.error("Could not extract text from PDF. Try pasting text manually.");
+        return;
+      }
+      setProfile({ ...profile, resume_text: text });
+      await supabase.from("profiles").update({ resume_text: text }).eq("user_id", user!.id);
+      toast.success("Resume PDF uploaded and text extracted!");
+      setTimeout(fetchNotifications, 500);
+    } catch (err) {
+      toast.error("Failed to parse PDF. Try pasting resume text instead.");
+    } finally {
+      setPdfLoading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
   };
 
   const getRecommendations = async () => {
@@ -96,7 +174,7 @@ export default function Dashboard() {
 
   const analyzeResume = async () => {
     if (!profile.resume_text) {
-      toast.error("Paste your resume text first!");
+      toast.error("Upload a PDF or paste your resume text first!");
       return;
     }
     setResumeLoading(true);
@@ -157,13 +235,38 @@ export default function Dashboard() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-card rounded-xl p-6">
             <div className="flex items-center gap-2 mb-4">
               <FileText className="w-5 h-5 text-primary" />
-              <h3 className="font-display font-semibold text-foreground">Resume Text</h3>
+              <h3 className="font-display font-semibold text-foreground">Resume</h3>
             </div>
+
+            {/* PDF Upload */}
+            <div className="mb-4">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf"
+                onChange={handlePdfUpload}
+                className="hidden"
+              />
+              <Button
+                variant="outline"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={pdfLoading}
+                className="w-full border-dashed border-2 border-border text-muted-foreground hover:text-foreground hover:bg-secondary gap-2 h-16"
+              >
+                {pdfLoading ? (
+                  <><Loader2 className="w-5 h-5 animate-spin" /> Extracting text from PDF...</>
+                ) : (
+                  <><Upload className="w-5 h-5" /> Upload Resume PDF</>
+                )}
+              </Button>
+              <p className="text-xs text-muted-foreground mt-1 text-center">or paste text below</p>
+            </div>
+
             <Textarea
               value={profile.resume_text}
               onChange={(e) => setProfile({ ...profile, resume_text: e.target.value })}
               placeholder="Paste your resume text here for AI analysis..."
-              className="bg-secondary border-border text-foreground placeholder:text-muted-foreground min-h-[200px] mb-4"
+              className="bg-secondary border-border text-foreground placeholder:text-muted-foreground min-h-[140px] mb-4"
             />
             <div className="flex gap-2">
               <Button onClick={saveResume} variant="outline" className="border-border text-foreground hover:bg-secondary">Save</Button>
@@ -179,26 +282,24 @@ export default function Dashboard() {
             )}
           </motion.div>
 
-          {/* Notifications */}
+          {/* Notifications - Real */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-card rounded-xl p-6">
             <div className="flex items-center gap-2 mb-4">
               <Bell className="w-5 h-5 text-primary" />
               <h3 className="font-display font-semibold text-foreground">Notifications</h3>
             </div>
             <div className="space-y-3">
-              {[
-                { msg: "New AI internships matching your skills!", time: "2h ago" },
-                { msg: "Complete your profile for better matches.", time: "1d ago" },
-                { msg: "5 new internships in Web Development.", time: "3d ago" },
-              ].map((n, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-secondary/50">
-                  <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
+              {notifications.length > 0 ? notifications.map((n) => (
+                <div key={n.id} className="flex items-start gap-3 p-3 rounded-lg bg-secondary/50">
+                  <div className={`w-2 h-2 rounded-full mt-2 shrink-0 ${n.is_read ? "bg-muted-foreground" : "bg-primary"}`} />
                   <div>
-                    <p className="text-sm text-foreground">{n.msg}</p>
-                    <p className="text-xs text-muted-foreground">{n.time}</p>
+                    <p className="text-sm text-foreground">{n.message}</p>
+                    <p className="text-xs text-muted-foreground">{timeAgo(n.created_at)}</p>
                   </div>
                 </div>
-              ))}
+              )) : (
+                <p className="text-sm text-muted-foreground text-center py-4">No notifications yet.</p>
+              )}
             </div>
           </motion.div>
         </div>
