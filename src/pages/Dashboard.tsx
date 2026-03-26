@@ -7,7 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { User, Plus, X, Sparkles, FileText, Bell, Loader2, Upload } from "lucide-react";
+import { User, Plus, X, Sparkles, FileText, Bell, Loader2, Upload, Send } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 
@@ -64,6 +66,9 @@ export default function Dashboard() {
   const [resumeLoading, setResumeLoading] = useState(false);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [applyDialog, setApplyDialog] = useState<AIRecommendation | null>(null);
+  const [applyForm, setApplyForm] = useState({ name: "", email: "", coverLetter: "" });
+  const [applySubmitted, setApplySubmitted] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth");
@@ -317,10 +322,17 @@ export default function Dashboard() {
           {recommendations.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {recommendations.map((rec, i) => (
-                <div key={i} className="glass-card rounded-xl p-5 hover:border-primary/30 transition-colors">
+                <div key={i} className="glass-card rounded-xl p-5 hover:border-primary/30 transition-colors flex flex-col">
                   <h3 className="font-display font-semibold text-foreground mb-1">{rec.title}</h3>
                   <p className="text-sm text-primary mb-3">{rec.role}</p>
-                  <p className="text-sm text-muted-foreground">{rec.reason}</p>
+                  <p className="text-sm text-muted-foreground mb-4 flex-1">{rec.reason}</p>
+                  <Button
+                    size="sm"
+                    onClick={() => { setApplyDialog(rec); setApplySubmitted(false); setApplyForm({ name: profile.full_name, email: profile.email, coverLetter: "" }); }}
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2 w-full"
+                  >
+                    <Send className="w-4 h-4" /> Apply Now
+                  </Button>
                 </div>
               ))}
             </div>
@@ -340,6 +352,58 @@ export default function Dashboard() {
             </div>
           )}
         </motion.div>
+
+        {/* Apply Dialog */}
+        <Dialog open={!!applyDialog} onOpenChange={(open) => { if (!open) setApplyDialog(null); }}>
+          <DialogContent className="bg-card border-border text-foreground max-w-md">
+            <DialogHeader>
+              <DialogTitle className="font-display text-foreground">
+                {applySubmitted ? "Application Submitted!" : `Apply for ${applyDialog?.title}`}
+              </DialogTitle>
+            </DialogHeader>
+
+            {applySubmitted ? (
+              <div className="text-center py-6">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <Sparkles className="w-8 h-8 text-primary" />
+                </div>
+                <p className="text-foreground font-medium mb-2">Your application has been submitted!</p>
+                <p className="text-sm text-muted-foreground">The administrator will review your application and reply soon.</p>
+                <Button onClick={() => setApplyDialog(null)} className="mt-6 bg-primary text-primary-foreground hover:bg-primary/90">Close</Button>
+              </div>
+            ) : (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!applyForm.name.trim() || !applyForm.email.trim()) {
+                    toast.error("Please fill in all required fields");
+                    return;
+                  }
+                  setApplySubmitted(true);
+                  toast.success("Application submitted successfully!");
+                }}
+                className="space-y-4"
+              >
+                <p className="text-sm text-muted-foreground">Role: <span className="text-primary">{applyDialog?.role}</span></p>
+                <div>
+                  <Label className="text-foreground">Full Name *</Label>
+                  <Input value={applyForm.name} onChange={(e) => setApplyForm({ ...applyForm, name: e.target.value })} className="bg-secondary border-border text-foreground mt-1" required />
+                </div>
+                <div>
+                  <Label className="text-foreground">Email *</Label>
+                  <Input type="email" value={applyForm.email} onChange={(e) => setApplyForm({ ...applyForm, email: e.target.value })} className="bg-secondary border-border text-foreground mt-1" required />
+                </div>
+                <div>
+                  <Label className="text-foreground">Cover Letter</Label>
+                  <Textarea value={applyForm.coverLetter} onChange={(e) => setApplyForm({ ...applyForm, coverLetter: e.target.value })} placeholder="Why are you interested in this role?" className="bg-secondary border-border text-foreground placeholder:text-muted-foreground mt-1 min-h-[100px]" />
+                </div>
+                <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 gap-2">
+                  <Send className="w-4 h-4" /> Submit Application
+                </Button>
+              </form>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
