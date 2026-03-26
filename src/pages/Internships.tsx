@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { internships, domains, locations, types, Internship } from "@/data/internships";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -12,8 +11,23 @@ import { motion } from "framer-motion";
 import { Bookmark, BookmarkCheck, MapPin, Clock, DollarSign, Search, Filter, Send, Sparkles } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
+interface Internship {
+  id: string;
+  title: string;
+  company: string;
+  role: string;
+  location: string;
+  domain: string;
+  type: string;
+  description: string;
+  skills: string[];
+  duration: string;
+  stipend: string | null;
+}
+
 export default function InternshipsPage() {
   const { user } = useAuth();
+  const [internships, setInternships] = useState<Internship[]>([]);
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState("");
   const [domainFilter, setDomainFilter] = useState("");
@@ -25,8 +39,14 @@ export default function InternshipsPage() {
   const [applySubmitted, setApplySubmitted] = useState(false);
 
   useEffect(() => {
+    fetchInternships();
     if (user) fetchBookmarks();
   }, [user]);
+
+  const fetchInternships = async () => {
+    const { data } = await supabase.from("internships").select("*").order("created_at", { ascending: false });
+    if (data) setInternships(data as Internship[]);
+  };
 
   const fetchBookmarks = async () => {
     const { data } = await supabase.from("bookmarks").select("internship_id").eq("user_id", user!.id);
@@ -52,6 +72,26 @@ export default function InternshipsPage() {
     setApplyForm({ name: "", email: "", coverLetter: "" });
   };
 
+  const submitApplication = async () => {
+    if (!applyForm.name.trim() || !applyForm.email.trim()) { toast.error("Please fill in all required fields"); return; }
+    if (user && applyInternship) {
+      await supabase.from("applications").insert({
+        user_id: user.id,
+        internship_id: applyInternship.id,
+        internship_title: applyInternship.title,
+        name: applyForm.name,
+        email: applyForm.email,
+        cover_letter: applyForm.coverLetter,
+      });
+    }
+    setApplySubmitted(true);
+    toast.success("Application submitted successfully!");
+  };
+
+  const domains = [...new Set(internships.map(i => i.domain))].sort();
+  const locations = [...new Set(internships.map(i => i.location))].sort();
+  const types = [...new Set(internships.map(i => i.type))].sort();
+
   const filtered = internships.filter((i) => {
     const matchesSearch = !search || i.title.toLowerCase().includes(search.toLowerCase()) || i.company.toLowerCase().includes(search.toLowerCase()) || i.skills.some((s) => s.toLowerCase().includes(search.toLowerCase()));
     const matchesDomain = !domainFilter || i.domain === domainFilter;
@@ -68,7 +108,6 @@ export default function InternshipsPage() {
           <p className="text-muted-foreground">Browse and bookmark opportunities that match your goals.</p>
         </motion.div>
 
-        {/* Search & Filters */}
         <div className="glass-card rounded-xl p-4 mb-8">
           <div className="flex gap-3 items-center">
             <div className="relative flex-1">
@@ -98,16 +137,9 @@ export default function InternshipsPage() {
           )}
         </div>
 
-        {/* Results */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((intern, i) => (
-            <motion.div
-              key={intern.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.03 }}
-              className="glass-card rounded-xl p-5 hover:border-primary/30 transition-colors group flex flex-col"
-            >
+            <motion.div key={intern.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }} className="glass-card rounded-xl p-5 hover:border-primary/30 transition-colors group flex flex-col">
               <div className="flex justify-between items-start mb-3">
                 <div>
                   <h3 className="font-display font-semibold text-foreground group-hover:text-primary transition-colors">{intern.title}</h3>
@@ -119,9 +151,7 @@ export default function InternshipsPage() {
               </div>
               <p className="text-sm text-muted-foreground mb-4">{intern.description}</p>
               <div className="flex flex-wrap gap-1.5 mb-4">
-                {intern.skills.map((s) => (
-                  <Badge key={s} variant="secondary" className="bg-secondary/70 text-secondary-foreground text-xs">{s}</Badge>
-                ))}
+                {intern.skills.map((s) => <Badge key={s} variant="secondary" className="bg-secondary/70 text-secondary-foreground text-xs">{s}</Badge>)}
               </div>
               <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
                 <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{intern.location}</span>
@@ -144,7 +174,6 @@ export default function InternshipsPage() {
           </div>
         )}
 
-        {/* Apply Dialog */}
         <Dialog open={!!applyInternship} onOpenChange={(open) => { if (!open) setApplyInternship(null); }}>
           <DialogContent className="bg-card border-border text-foreground max-w-md">
             <DialogHeader>
@@ -152,7 +181,6 @@ export default function InternshipsPage() {
                 {applySubmitted ? "Application Submitted!" : `Apply for ${applyInternship?.title}`}
               </DialogTitle>
             </DialogHeader>
-
             {applySubmitted ? (
               <div className="text-center py-6">
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
@@ -163,36 +191,14 @@ export default function InternshipsPage() {
                 <Button onClick={() => setApplyInternship(null)} className="mt-6 bg-primary text-primary-foreground hover:bg-primary/90">Close</Button>
               </div>
             ) : (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (!applyForm.name.trim() || !applyForm.email.trim()) {
-                    toast.error("Please fill in all required fields");
-                    return;
-                  }
-                  setApplySubmitted(true);
-                  toast.success("Application submitted successfully!");
-                }}
-                className="space-y-4"
-              >
+              <form onSubmit={(e) => { e.preventDefault(); submitApplication(); }} className="space-y-4">
                 <p className="text-sm text-muted-foreground">
                   <span className="text-primary font-medium">{applyInternship?.company}</span> · {applyInternship?.role} · {applyInternship?.location}
                 </p>
-                <div>
-                  <Label className="text-foreground">Full Name *</Label>
-                  <Input value={applyForm.name} onChange={(e) => setApplyForm({ ...applyForm, name: e.target.value })} className="bg-secondary border-border text-foreground mt-1" required />
-                </div>
-                <div>
-                  <Label className="text-foreground">Email *</Label>
-                  <Input type="email" value={applyForm.email} onChange={(e) => setApplyForm({ ...applyForm, email: e.target.value })} className="bg-secondary border-border text-foreground mt-1" required />
-                </div>
-                <div>
-                  <Label className="text-foreground">Cover Letter</Label>
-                  <Textarea value={applyForm.coverLetter} onChange={(e) => setApplyForm({ ...applyForm, coverLetter: e.target.value })} placeholder="Why are you interested in this role?" className="bg-secondary border-border text-foreground placeholder:text-muted-foreground mt-1 min-h-[100px]" />
-                </div>
-                <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 gap-2">
-                  <Send className="w-4 h-4" /> Submit Application
-                </Button>
+                <div><Label className="text-foreground">Full Name *</Label><Input value={applyForm.name} onChange={(e) => setApplyForm({ ...applyForm, name: e.target.value })} className="bg-secondary border-border text-foreground mt-1" required /></div>
+                <div><Label className="text-foreground">Email *</Label><Input type="email" value={applyForm.email} onChange={(e) => setApplyForm({ ...applyForm, email: e.target.value })} className="bg-secondary border-border text-foreground mt-1" required /></div>
+                <div><Label className="text-foreground">Cover Letter</Label><Textarea value={applyForm.coverLetter} onChange={(e) => setApplyForm({ ...applyForm, coverLetter: e.target.value })} placeholder="Why are you interested in this role?" className="bg-secondary border-border text-foreground placeholder:text-muted-foreground mt-1 min-h-[100px]" /></div>
+                <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 gap-2"><Send className="w-4 h-4" /> Submit Application</Button>
               </form>
             )}
           </DialogContent>
