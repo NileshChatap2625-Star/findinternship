@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { Briefcase, Mail, Lock, User } from "lucide-react";
+import { Briefcase, Mail, Lock, User, Shield } from "lucide-react";
 
 export default function Auth() {
+  const [searchParams] = useSearchParams();
+  const isAdminMode = searchParams.get("mode") === "admin";
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,13 +24,37 @@ export default function Auth() {
     e.preventDefault();
     setLoading(true);
     try {
-      if (isLogin) {
+      if (isAdminMode || isLogin) {
         await signIn(email, password);
+
+        if (isAdminMode) {
+          // Check if user has admin role
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            const { data: roleData } = await supabase
+              .from("user_roles")
+              .select("role")
+              .eq("user_id", user.id)
+              .eq("role", "admin")
+              .maybeSingle();
+
+            if (roleData) {
+              toast.success("Welcome, Admin!");
+              navigate("/admin");
+              return;
+            } else {
+              toast.error("You do not have admin access.");
+              await supabase.auth.signOut();
+              return;
+            }
+          }
+        }
+
         toast.success("Welcome back!");
         navigate("/dashboard");
       } else {
         await signUp(email, password, fullName);
-        toast.success("Account created! Check your email to confirm.");
+        toast.success("Account created! You can now sign in.");
       }
     } catch (err: any) {
       toast.error(err.message || "Authentication failed");
@@ -38,7 +65,6 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 pt-16">
-      {/* Background glow */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[120px] animate-pulse-glow" />
       </div>
@@ -50,19 +76,27 @@ export default function Auth() {
       >
         <div className="glass-card rounded-2xl p-8">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
-              <Briefcase className="w-6 h-6 text-primary-foreground" />
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isAdminMode ? 'bg-destructive' : 'bg-primary'}`}>
+              {isAdminMode ? (
+                <Shield className="w-6 h-6 text-destructive-foreground" />
+              ) : (
+                <Briefcase className="w-6 h-6 text-primary-foreground" />
+              )}
             </div>
           </div>
           <h1 className="text-2xl font-display font-bold text-center text-foreground mb-2">
-            {isLogin ? "Welcome Back" : "Create Account"}
+            {isAdminMode ? "Admin Login" : isLogin ? "Welcome Back" : "Create Account"}
           </h1>
           <p className="text-muted-foreground text-center mb-8 text-sm">
-            {isLogin ? "Sign in to find your dream internship" : "Join InternAI to get AI-powered recommendations"}
+            {isAdminMode
+              ? "Sign in with your admin credentials"
+              : isLogin
+              ? "Sign in to find your dream internship"
+              : "Join InternAI to get AI-powered recommendations"}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {!isLogin && (
+            {!isLogin && !isAdminMode && (
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-foreground">Full Name</Label>
                 <div className="relative">
@@ -85,17 +119,19 @@ export default function Auth() {
                 <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="pl-10 bg-secondary border-border text-foreground placeholder:text-muted-foreground" required minLength={6} />
               </div>
             </div>
-            <Button type="submit" disabled={loading} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-              {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}
+            <Button type="submit" disabled={loading} className={`w-full ${isAdminMode ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90' : 'bg-primary text-primary-foreground hover:bg-primary/90'}`}>
+              {loading ? "Loading..." : isAdminMode ? "Admin Sign In" : isLogin ? "Sign In" : "Create Account"}
             </Button>
           </form>
 
-          <p className="text-center text-sm text-muted-foreground mt-6">
-            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-            <button onClick={() => setIsLogin(!isLogin)} className="text-primary hover:underline font-medium">
-              {isLogin ? "Sign Up" : "Sign In"}
-            </button>
-          </p>
+          {!isAdminMode && (
+            <p className="text-center text-sm text-muted-foreground mt-6">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+              <button onClick={() => setIsLogin(!isLogin)} className="text-primary hover:underline font-medium">
+                {isLogin ? "Sign Up" : "Sign In"}
+              </button>
+            </p>
+          )}
         </div>
       </motion.div>
     </div>

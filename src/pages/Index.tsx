@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Sparkles, Search, BookOpen, Bot, ArrowRight, Zap, Target, TrendingUp } from "lucide-react";
+import { Sparkles, Search, BookOpen, Bot, ArrowRight, Zap, Target, TrendingUp, Shield } from "lucide-react";
 
 const features = [
   { icon: Sparkles, title: "AI Recommendations", desc: "Get personalized internship matches based on your skills and resume." },
@@ -49,6 +49,11 @@ export default function Index() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/auth?mode=admin">
+                <Button size="lg" variant="outline" className="border-primary/50 text-primary hover:bg-primary/10 gap-2 px-8">
+                  <Shield className="w-4 h-4" /> Admin Login
+                </Button>
+              </Link>
               <Link to="/auth">
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 glow-primary gap-2 px-8">
                   Get Started <ArrowRight className="w-4 h-4" />
