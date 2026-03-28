@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Sparkles, Search, BookOpen, Bot, ArrowRight, Zap, Target, TrendingUp, Shield, Code, Briefcase, GraduationCap, Mail, Github, Linkedin, Twitter } from "lucide-react";
-import { useRef, useEffect, useState } from "react";
+import { Sparkles, Search, BookOpen, Bot, ArrowRight, Zap, Target, TrendingUp, Shield, Code, Briefcase, GraduationCap, Github, Linkedin, Twitter } from "lucide-react";
+import { useRef } from "react";
 
 /* ─── Floating Particles ─── */
 function Particles() {
@@ -99,7 +99,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 export default function Index() {
