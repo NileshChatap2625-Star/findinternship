@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Space Grotesk', 'sans-serif'],
-        body: ['Inter', 'sans-serif'],
+        display: ['"Times New Roman"', 'Times', 'serif'],
+        body: ['"Times New Roman"', 'Times', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
