@@ -6,53 +6,53 @@
 
 @layer base {
   :root {
-    --background: 230 50% 6%;
-    --foreground: 210 40% 95%;
+    --background: 240 15% 4%;
+    --foreground: 220 20% 92%;
 
-    --card: 230 40% 10%;
-    --card-foreground: 210 40% 95%;
+    --card: 240 12% 8%;
+    --card-foreground: 220 20% 92%;
 
-    --popover: 230 40% 10%;
-    --popover-foreground: 210 40% 95%;
+    --popover: 240 12% 8%;
+    --popover-foreground: 220 20% 92%;
 
-    --primary: 187 94% 43%;
-    --primary-foreground: 230 50% 6%;
+    --primary: 250 85% 65%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 230 30% 16%;
-    --secondary-foreground: 210 40% 90%;
+    --secondary: 240 15% 13%;
+    --secondary-foreground: 220 20% 88%;
 
-    --muted: 230 25% 14%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 240 12% 12%;
+    --muted-foreground: 220 10% 50%;
 
-    --accent: 38 92% 50%;
-    --accent-foreground: 230 50% 6%;
+    --accent: 195 90% 55%;
+    --accent-foreground: 240 15% 4%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 230 25% 18%;
-    --input: 230 25% 18%;
-    --ring: 187 94% 43%;
+    --border: 240 12% 14%;
+    --input: 240 12% 14%;
+    --ring: 250 85% 65%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 230 40% 8%;
-    --sidebar-foreground: 210 40% 90%;
-    --sidebar-primary: 187 94% 43%;
-    --sidebar-primary-foreground: 230 50% 6%;
-    --sidebar-accent: 230 30% 16%;
-    --sidebar-accent-foreground: 210 40% 90%;
-    --sidebar-border: 230 25% 18%;
-    --sidebar-ring: 187 94% 43%;
+    --sidebar-background: 240 15% 6%;
+    --sidebar-foreground: 220 20% 88%;
+    --sidebar-primary: 250 85% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 15% 13%;
+    --sidebar-accent-foreground: 220 20% 88%;
+    --sidebar-border: 240 12% 14%;
+    --sidebar-ring: 250 85% 65%;
 
-    --glass: 230 40% 12% / 0.6;
-    --glass-border: 230 25% 22%;
-    --glow-primary: 187 94% 43%;
-    --glow-accent: 38 92% 50%;
-    --gradient-hero: linear-gradient(135deg, hsl(230 50% 6%) 0%, hsl(230 40% 12%) 50%, hsl(220 50% 10%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(230 40% 12% / 0.8) 0%, hsl(230 40% 8% / 0.6) 100%);
-    --gradient-primary: linear-gradient(135deg, hsl(187 94% 43%) 0%, hsl(200 90% 55%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(38 92% 50%) 0%, hsl(25 95% 55%) 100%);
+    --glass: 240 12% 10% / 0.5;
+    --glass-border: 240 12% 18%;
+    --glow-primary: 250 85% 65%;
+    --glow-accent: 195 90% 55%;
+    --gradient-hero: linear-gradient(135deg, hsl(240 15% 4%) 0%, hsl(260 20% 8%) 40%, hsl(240 15% 6%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(240 12% 10% / 0.7) 0%, hsl(240 12% 6% / 0.5) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(250 85% 65%) 0%, hsl(195 90% 55%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(195 90% 55%) 0%, hsl(170 80% 50%) 100%);
 
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
@@ -77,16 +77,37 @@
 @layer utilities {
   .glass-card {
     background: hsl(var(--glass));
-    backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--glass-border));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid hsl(var(--glass-border) / 0.4);
+  }
+
+  .glass-card-hover {
+    background: hsl(var(--glass));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid hsl(var(--glass-border) / 0.4);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card-hover:hover {
+    border-color: hsl(var(--glow-primary) / 0.4);
+    box-shadow: 0 0 30px -5px hsl(var(--glow-primary) / 0.15),
+                inset 0 1px 0 0 hsl(var(--glow-primary) / 0.1);
+    transform: translateY(-2px);
   }
 
   .glow-primary {
-    box-shadow: 0 0 30px -5px hsl(var(--glow-primary) / 0.3);
+    box-shadow: 0 0 40px -8px hsl(var(--glow-primary) / 0.35);
   }
 
   .glow-accent {
-    box-shadow: 0 0 30px -5px hsl(var(--glow-accent) / 0.3);
+    box-shadow: 0 0 40px -8px hsl(var(--glow-accent) / 0.35);
+  }
+
+  .glow-border {
+    box-shadow: 0 0 15px -3px hsl(var(--glow-primary) / 0.3),
+                inset 0 1px 0 0 hsl(var(--glow-primary) / 0.15);
   }
 
   .gradient-text {
@@ -107,6 +128,34 @@
     background: var(--gradient-hero);
   }
 
+  .neon-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .neon-button::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: var(--gradient-primary);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .neon-button:hover::before {
+    opacity: 1;
+  }
+
+  .neon-button:hover {
+    box-shadow: 0 0 25px -5px hsl(var(--glow-primary) / 0.4);
+  }
+
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
@@ -117,11 +166,37 @@
   }
 
   @keyframes pulse-glow {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 0.8; }
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
   }
 
   .animate-pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
+    animation: pulse-glow 4s ease-in-out infinite;
+  }
+
+  @keyframes drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -20px) scale(1.05); }
+    50% { transform: translate(-20px, 15px) scale(0.95); }
+    75% { transform: translate(15px, 25px) scale(1.02); }
+  }
+
+  .animate-drift {
+    animation: drift 20s ease-in-out infinite;
+  }
+
+  .animate-drift-slow {
+    animation: drift 30s ease-in-out infinite reverse;
+  }
+
+  @keyframes particle-float {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+    25% { opacity: 0.8; }
+    50% { transform: translateY(-40px) translateX(20px); opacity: 0.5; }
+    75% { opacity: 0.7; }
+  }
+
+  .animate-particle {
+    animation: particle-float 8s ease-in-out infinite;
   }
 }
