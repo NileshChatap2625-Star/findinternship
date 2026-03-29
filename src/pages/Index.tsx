@@ -10,7 +10,7 @@ function Particles() {
     id: i,
     x: Math.random() * 100,
     y: Math.random() * 100,
-    size: Math.random() * 6 + 3,
+    size: Math.random() * 3 + 1.5,
     delay: Math.random() * 6,
     duration: Math.random() * 8 + 5,
   }));
