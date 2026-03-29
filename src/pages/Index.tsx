@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Sparkles, Search, BookOpen, Bot, ArrowRight, Zap, Target, TrendingUp, Shield, Code, Briefcase, GraduationCap, Github, Linkedin, Twitter } from "lucide-react";
-import { useRef } from "react";
+import { Sparkles, Search, BookOpen, Bot, ArrowRight, Zap, Target, TrendingUp, Shield, Code, Briefcase, GraduationCap, Github, Linkedin, Twitter, BarChart3 } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
 /* ─── Floating Particles ─── */
 function Particles() {
