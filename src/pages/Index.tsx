@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Sparkles, Search, BookOpen, Bot, ArrowRight, Zap, Target, TrendingUp, Shield, Code, Briefcase, GraduationCap, Github, Linkedin, Twitter } from "lucide-react";
 import { useRef } from "react";
+import LiveDashboard from "@/components/LiveDashboard";
 
 /* ─── Floating Particles ─── */
 function Particles() {
@@ -282,6 +283,9 @@ export default function Index() {
           ))}
         </motion.div>
       </section>
+
+      {/* ─── Live Dashboard ─── */}
+      <LiveDashboard />
 
       {/* ─── CTA ─── */}
       <section className="container mx-auto px-4 py-24">
