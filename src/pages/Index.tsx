@@ -6,13 +6,13 @@ import { useRef } from "react";
 
 /* ─── Floating Particles ─── */
 function Particles() {
-  const particles = Array.from({ length: 40 }, (_, i) => ({
+  const particles = Array.from({ length: 70 }, (_, i) => ({
     id: i,
     x: Math.random() * 100,
     y: Math.random() * 100,
-    size: Math.random() * 3 + 1,
-    delay: Math.random() * 8,
-    duration: Math.random() * 6 + 6,
+    size: Math.random() * 6 + 3,
+    delay: Math.random() * 6,
+    duration: Math.random() * 8 + 5,
   }));
 
   return (
@@ -26,16 +26,24 @@ function Particles() {
             top: `${p.y}%`,
             width: p.size,
             height: p.size,
-            background: p.id % 3 === 0
-              ? `hsl(var(--glow-primary) / 0.6)`
+            background: p.id % 4 === 0
+              ? `hsl(var(--glow-primary) / 0.7)`
+              : p.id % 4 === 1
+              ? `hsl(var(--glow-accent) / 0.6)`
+              : p.id % 4 === 2
+              ? `hsl(250 85% 75% / 0.5)`
+              : `hsl(195 90% 65% / 0.4)`,
+            boxShadow: p.id % 3 === 0
+              ? `0 0 ${p.size * 3}px hsl(var(--glow-primary) / 0.4)`
               : p.id % 3 === 1
-              ? `hsl(var(--glow-accent) / 0.5)`
-              : `hsl(var(--foreground) / 0.2)`,
+              ? `0 0 ${p.size * 3}px hsl(var(--glow-accent) / 0.3)`
+              : 'none',
           }}
           animate={{
-            y: [0, -60, 0],
-            x: [0, p.id % 2 === 0 ? 20 : -20, 0],
-            opacity: [0.2, 0.8, 0.2],
+            y: [0, -80 - Math.random() * 40, 0],
+            x: [0, p.id % 2 === 0 ? 30 + Math.random() * 20 : -(30 + Math.random() * 20), 0],
+            opacity: [0.15, 0.9, 0.15],
+            scale: [1, 1.4, 1],
           }}
           transition={{
             duration: p.duration,
