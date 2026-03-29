@@ -2,8 +2,9 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdminCheck } from "@/hooks/useAdminCheck";
 import { Button } from "@/components/ui/button";
-import { Briefcase, LayoutDashboard, Home, LogOut, Bot, Menu, X, Shield } from "lucide-react";
+import { LayoutDashboard, Home, LogOut, Bot, Menu, X, Shield } from "lucide-react";
 import { useState } from "react";
+import logoImg from "@/assets/logo.jpg";
 
 const navItems = [
   { to: "/", label: "Home", icon: Home },
