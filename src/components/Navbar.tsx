@@ -4,6 +4,7 @@ import { useAdminCheck } from "@/hooks/useAdminCheck";
 import { Button } from "@/components/ui/button";
 import { Briefcase, LayoutDashboard, Home, LogOut, Bot, Menu, X, Shield } from "lucide-react";
 import { useState } from "react";
+import logoImg from "@/assets/logo.jpg";
 
 const navItems = [
   { to: "/", label: "Home", icon: Home },
@@ -22,9 +23,7 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <Briefcase className="w-4 h-4 text-primary-foreground" />
-          </div>
+          <img src={logoImg} alt="InternAI Logo" className="w-8 h-8 rounded-lg object-cover" />
           <span className="font-display font-bold text-lg text-foreground">InternAI</span>
         </Link>
 
