@@ -285,6 +285,9 @@ export default function Index() {
         </motion.div>
       </section>
 
+      {/* ─── Live Dashboard ─── */}
+      <LiveDashboard />
+
       {/* ─── CTA ─── */}
       <section className="container mx-auto px-4 py-24">
         <motion.div
