@@ -20,65 +20,29 @@ export default function Auth() {
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
 
-  // Admin OTP states
-  const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState("");
-
-  // Listen for auth changes to handle OTP verification
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (isAdminMode && event === "SIGNED_IN" && session?.user) {
-        const { data: roleData } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", session.user.id)
-          .eq("role", "admin")
-          .maybeSingle();
-
-        if (roleData) {
-          toast.success("Welcome, Admin!");
-          navigate("/admin");
-        } else {
-          toast.error("You do not have admin access.");
-          await supabase.auth.signOut();
-        }
+  const handleAdminLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await signIn(email, password);
+      // Check admin role
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Login failed");
+      const { data: roleData } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+      if (roleData) {
+        toast.success("Welcome, Admin!");
+        navigate("/admin");
+      } else {
+        toast.error("You do not have admin access.");
+        await supabase.auth.signOut();
       }
-    });
-    return () => subscription.unsubscribe();
-  }, [isAdminMode, navigate]);
-
-  const handleAdminSendOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.signInWithOtp({ email });
-      if (error) throw error;
-      setOtpSent(true);
-      toast.success("OTP sent to your email! Check your inbox.");
     } catch (err: any) {
-      toast.error(err.message || "Failed to send OTP");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAdminVerifyOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (otp.length !== 6) {
-      toast.error("Please enter the 6-digit OTP");
-      return;
-    }
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.verifyOtp({
-        email,
-        token: otp,
-        type: "email",
-      });
-      if (error) throw error;
-      // Auth state change listener handles the rest
-    } catch (err: any) {
-      toast.error(err.message || "Invalid OTP");
+      toast.error(err.message || "Admin login failed");
     } finally {
       setLoading(false);
     }
