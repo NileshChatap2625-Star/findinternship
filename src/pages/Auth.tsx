@@ -93,57 +93,32 @@ export default function Auth() {
           </h1>
           <p className="text-muted-foreground text-center mb-8 text-sm">
             {isAdminMode
-              ? otpSent
-                ? "Enter the 6-digit OTP sent to your email"
-                : "Enter your admin email to receive an OTP"
+              ? "Enter your admin credentials to sign in"
               : isLogin
               ? "Sign in to find your dream internship"
               : "Join InternAI to get AI-powered recommendations"}
           </p>
 
           {isAdminMode ? (
-            // Admin OTP Login
-            !otpSent ? (
-              <form onSubmit={handleAdminSendOtp} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="admin-email" className="text-foreground">Admin Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input id="admin-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@example.com" className="pl-10 bg-secondary border-border text-foreground placeholder:text-muted-foreground" required />
-                  </div>
+            <form onSubmit={handleAdminLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="admin-email" className="text-foreground">Admin Email</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input id="admin-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@example.com" className="pl-10 bg-secondary border-border text-foreground placeholder:text-muted-foreground" required />
                 </div>
-                <Button type="submit" disabled={loading} className="w-full bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                  {loading ? "Sending OTP..." : "Send OTP"}
-                </Button>
-              </form>
-            ) : (
-              <form onSubmit={handleAdminVerifyOtp} className="space-y-6">
-                <div className="space-y-3">
-                  <Label className="text-foreground text-center block">Enter OTP</Label>
-                  <div className="flex justify-center">
-                    <InputOTP maxLength={6} value={otp} onChange={setOtp}>
-                      <InputOTPGroup>
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                        <InputOTPSlot index={3} />
-                        <InputOTPSlot index={4} />
-                        <InputOTPSlot index={5} />
-                      </InputOTPGroup>
-                    </InputOTP>
-                  </div>
-                  <p className="text-xs text-muted-foreground text-center">
-                    OTP sent to <span className="text-primary font-medium">{email}</span>
-                  </p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="admin-password" className="text-foreground">Password</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input id="admin-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="pl-10 bg-secondary border-border text-foreground placeholder:text-muted-foreground" required minLength={6} />
                 </div>
-                <Button type="submit" disabled={loading || otp.length !== 6} className="w-full bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                  {loading ? "Verifying..." : "Verify & Login"}
-                </Button>
-                <button type="button" onClick={() => { setOtpSent(false); setOtp(""); }} className="text-sm text-muted-foreground hover:text-foreground w-full text-center">
-                  ← Change email
-                </button>
-              </form>
-            )
+              </div>
+              <Button type="submit" disabled={loading} className="w-full bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                {loading ? "Signing in..." : "Admin Sign In"}
+              </Button>
+            </form>
           ) : (
             // Regular user login/signup
             <form onSubmit={handleSubmit} className="space-y-4">
