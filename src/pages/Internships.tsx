@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,7 @@ interface Internship {
 
 export default function InternshipsPage() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [internships, setInternships] = useState<Internship[]>([]);
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState("");
@@ -160,8 +162,8 @@ export default function InternshipsPage() {
               </div>
               <div className="flex items-center justify-between mt-auto pt-2">
                 <Badge className="bg-primary/10 text-primary border-0 text-xs">{intern.type}</Badge>
-                <Button size="sm" onClick={() => openApplyDialog(intern)} className="bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 text-xs h-8">
-                  <Send className="w-3.5 h-3.5" /> Apply
+                <Button size="sm" onClick={() => navigate("/auth")} className="bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 text-xs h-8">
+                  Get Started
                 </Button>
               </div>
             </motion.div>
