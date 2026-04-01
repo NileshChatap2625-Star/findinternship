@@ -28,6 +28,7 @@ interface Internship {
 
 export default function InternshipsPage() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [internships, setInternships] = useState<Internship[]>([]);
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState("");
