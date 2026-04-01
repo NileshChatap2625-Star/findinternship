@@ -1,21 +1,15 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { Briefcase, Mail, Lock, User, Shield, Loader2, RefreshCw } from "lucide-react";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
+import { Briefcase, Mail, Lock, User, Shield, Loader2 } from "lucide-react";
 
 const ADMIN_EMAIL = "nileshchatap25@gmail.com";
-const RESEND_COOLDOWN = 30;
+const ADMIN_PASSWORD = "Nilesh@2625";
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
