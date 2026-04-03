@@ -79,6 +79,7 @@ export default function Dashboard() {
   const [aiLoading, setAiLoading] = useState(false);
   const [resumeAnalysis, setResumeAnalysis] = useState("");
   const [resumeLoading, setResumeLoading] = useState(false);
+  const [atsScore, setAtsScore] = useState<number | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [matchingInternships, setMatchingInternships] = useState<Internship[]>([]);
