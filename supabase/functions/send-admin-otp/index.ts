@@ -120,7 +120,7 @@ Deno.serve(async (req) => {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${lovableApiKey}`,
-        "X-Connection-Api-Key": lovableApiKey,
+        "X-Connection-Api-Key": resendApiKey,
       },
       body: JSON.stringify({
         from: "InternAI Admin <onboarding@resend.dev>",
