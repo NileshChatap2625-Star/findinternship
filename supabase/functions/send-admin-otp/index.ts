@@ -58,6 +58,7 @@ Deno.serve(async (req) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const lovableApiKey = Deno.env.get("LOVABLE_API_KEY")!;
+    const resendApiKey = Deno.env.get("RESEND_API_KEY")!;
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
     // Rate limit: max 1 OTP per 30 seconds per email
@@ -120,7 +121,7 @@ Deno.serve(async (req) => {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${lovableApiKey}`,
-        "X-Connection-Api-Key": lovableApiKey,
+        "X-Connection-Api-Key": resendApiKey,
       },
       body: JSON.stringify({
         from: "InternAI Admin <onboarding@resend.dev>",
