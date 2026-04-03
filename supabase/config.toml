@@ -1,1 +1,7 @@
 project_id = "bnqvwyekycypqixiduxk"
+
+[functions.send-admin-otp]
+verify_jwt = false
+
+[functions.verify-admin-otp]
+verify_jwt = false
