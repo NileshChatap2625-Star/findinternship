@@ -204,6 +204,9 @@ export default function Dashboard() {
       });
       if (!analyzeResponse.error) {
         setResumeAnalysis(analyzeResponse.data.analysis || "");
+        if (analyzeResponse.data.ats_score !== undefined) {
+          setAtsScore(analyzeResponse.data.ats_score);
+        }
       }
     } catch (err) {
       console.error("Resume analysis error:", err);
