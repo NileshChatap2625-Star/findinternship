@@ -57,6 +57,7 @@ Deno.serve(async (req) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const lovableApiKey = Deno.env.get("LOVABLE_API_KEY")!;
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
     // Rate limit: max 1 OTP per 30 seconds per email
@@ -102,42 +103,47 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Send OTP via Supabase Auth magic link (piggyback on auth system)
-    // Since we can't send raw emails without email domain, we use signInWithOtp
-    // which sends an email through Supabase's built-in email system
-    const { error: otpError } = await supabase.auth.admin.generateLink({
-      type: "magiclink",
-      email: email.toLowerCase(),
-    });
+    // Send OTP email using Lovable AI email gateway (Resend)
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px; background: #ffffff; border-radius: 12px;">
+        <h1 style="font-size: 24px; font-weight: bold; color: #1a1a2e; margin-bottom: 8px;">Admin Login OTP</h1>
+        <p style="color: #555; font-size: 14px; margin-bottom: 24px;">Use the following code to complete your admin login. This code expires in 5 minutes.</p>
+        <div style="background: #f0f0f5; border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 24px;">
+          <span style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: #1a1a2e;">${otp}</span>
+        </div>
+        <p style="color: #999; font-size: 12px;">If you didn't request this code, please ignore this email.</p>
+      </div>
+    `;
 
-    // Even if the auth email fails, we still have the OTP stored
-    // We'll try sending via auth.signInWithOtp as fallback
-    if (otpError) {
-      console.log("generateLink failed, trying signInWithOtp:", otpError.message);
-    }
-
-    // Use the admin API to send an invite/recovery email with the OTP in it
-    // Actually, let's use a different approach - send OTP via the auth system
-    const { error: signInError } = await supabase.auth.signInWithOtp({
-      email: email.toLowerCase(),
-      options: {
-        data: { admin_otp: otp, is_admin_login: true },
-        shouldCreateUser: false,
+    const resendResponse = await fetch("https://connector-gateway.lovable.dev/resend/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${lovableApiKey}`,
+        "X-Connection-Api-Key": lovableApiKey,
       },
+      body: JSON.stringify({
+        from: "InternAI Admin <onboarding@resend.dev>",
+        to: [email.toLowerCase()],
+        subject: `Your Admin OTP: ${otp}`,
+        html: emailHtml,
+      }),
     });
 
-    if (signInError) {
-      console.error("Auth OTP send failed:", signInError.message);
-      // OTP is stored in our table, we can still verify it
-      // Return success but note that email may not be delivered
+    const resendResult = await resendResponse.json();
+
+    if (!resendResponse.ok) {
+      console.error("Email send failed:", resendResult);
+      return new Response(
+        JSON.stringify({ error: "Failed to send OTP email. Please try again." }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     return new Response(
       JSON.stringify({ 
         success: true, 
         message: "OTP sent to your email",
-        // Include OTP in development for testing (REMOVE IN PRODUCTION)
-        ...(Deno.env.get("ENVIRONMENT") === "development" ? { dev_otp: otp } : {}),
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
