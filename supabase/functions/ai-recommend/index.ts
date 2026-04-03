@@ -58,8 +58,18 @@ serve(async (req) => {
       }
 
       const data = await response.json();
-      const analysis = data.choices?.[0]?.message?.content || "Unable to analyze resume.";
-      return new Response(JSON.stringify({ analysis }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      const fullAnalysis = data.choices?.[0]?.message?.content || "Unable to analyze resume.";
+      
+      // Extract ATS score from the response
+      let atsScore = 0;
+      let analysis = fullAnalysis;
+      const scoreMatch = fullAnalysis.match(/ATS_SCORE:\s*(\d+)/);
+      if (scoreMatch) {
+        atsScore = Math.min(100, Math.max(0, parseInt(scoreMatch[1], 10)));
+        analysis = fullAnalysis.replace(/ATS_SCORE:\s*\d+\s*\n?/, "").trim();
+      }
+      
+      return new Response(JSON.stringify({ analysis, ats_score: atsScore }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     // Recommend internships
