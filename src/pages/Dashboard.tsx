@@ -442,6 +442,37 @@ export default function Dashboard() {
                 <ReactMarkdown>{resumeAnalysis}</ReactMarkdown>
               </div>
             )}
+
+            {/* ATS Score */}
+            {atsScore !== null && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="mt-4 p-4 rounded-lg bg-secondary/50 border border-border"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-primary" />
+                    <span className="text-sm font-semibold text-foreground">ATS Score</span>
+                  </div>
+                  <span className={`text-2xl font-bold ${
+                    atsScore >= 75 ? "text-green-500" :
+                    atsScore >= 50 ? "text-yellow-500" :
+                    "text-red-500"
+                  }`}>
+                    {atsScore}/100
+                  </span>
+                </div>
+                <Progress value={atsScore} className="h-3 mb-2" />
+                <p className="text-xs text-muted-foreground">
+                  {atsScore >= 75
+                    ? "✅ Great! Your resume is well-optimized for ATS systems."
+                    : atsScore >= 50
+                    ? "⚠️ Decent score. Consider adding more relevant keywords and quantifiable achievements."
+                    : "❌ Needs improvement. Focus on formatting, keywords, and clear section headers."}
+                </p>
+              </motion.div>
+            )}
           </motion.div>
 
           {/* Notifications */}
