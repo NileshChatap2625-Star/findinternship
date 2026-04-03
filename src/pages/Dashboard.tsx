@@ -7,7 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { User, Plus, X, Sparkles, FileText, Bell, Loader2, Upload, Send, MapPin, Clock, DollarSign, CheckCircle, Briefcase } from "lucide-react";
+import { User, Plus, X, Sparkles, FileText, Bell, Loader2, Upload, Send, MapPin, Clock, DollarSign, CheckCircle, Briefcase, TrendingUp } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
@@ -78,6 +79,7 @@ export default function Dashboard() {
   const [aiLoading, setAiLoading] = useState(false);
   const [resumeAnalysis, setResumeAnalysis] = useState("");
   const [resumeLoading, setResumeLoading] = useState(false);
+  const [atsScore, setAtsScore] = useState<number | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [matchingInternships, setMatchingInternships] = useState<Internship[]>([]);
@@ -202,6 +204,9 @@ export default function Dashboard() {
       });
       if (!analyzeResponse.error) {
         setResumeAnalysis(analyzeResponse.data.analysis || "");
+        if (analyzeResponse.data.ats_score !== undefined) {
+          setAtsScore(analyzeResponse.data.ats_score);
+        }
       }
     } catch (err) {
       console.error("Resume analysis error:", err);
@@ -436,6 +441,37 @@ export default function Dashboard() {
               <div className="mt-4 p-4 rounded-lg bg-secondary/50 text-sm text-foreground prose prose-invert prose-sm max-w-none max-h-[300px] overflow-y-auto">
                 <ReactMarkdown>{resumeAnalysis}</ReactMarkdown>
               </div>
+            )}
+
+            {/* ATS Score */}
+            {atsScore !== null && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="mt-4 p-4 rounded-lg bg-secondary/50 border border-border"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-primary" />
+                    <span className="text-sm font-semibold text-foreground">ATS Score</span>
+                  </div>
+                  <span className={`text-2xl font-bold ${
+                    atsScore >= 75 ? "text-green-500" :
+                    atsScore >= 50 ? "text-yellow-500" :
+                    "text-red-500"
+                  }`}>
+                    {atsScore}/100
+                  </span>
+                </div>
+                <Progress value={atsScore} className="h-3 mb-2" />
+                <p className="text-xs text-muted-foreground">
+                  {atsScore >= 75
+                    ? "✅ Great! Your resume is well-optimized for ATS systems."
+                    : atsScore >= 50
+                    ? "⚠️ Decent score. Consider adding more relevant keywords and quantifiable achievements."
+                    : "❌ Needs improvement. Focus on formatting, keywords, and clear section headers."}
+                </p>
+              </motion.div>
             )}
           </motion.div>
 
