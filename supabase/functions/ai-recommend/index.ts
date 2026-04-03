@@ -44,8 +44,8 @@ serve(async (req) => {
         body: JSON.stringify({
           model: "google/gemini-3-flash-preview",
           messages: [
-            { role: "system", content: "You are a career advisor AI. Analyze the resume and provide: 1) A brief summary of strengths 2) Key skills identified 3) Areas for improvement 4) Suggested internship domains. Format with markdown." },
-            { role: "user", content: `Analyze this resume:\n\n${resume_text}` },
+            { role: "system", content: "You are a career advisor AI and ATS (Applicant Tracking System) expert. Analyze the resume and provide:\n1) ATS Score (0-100) based on: keyword optimization, formatting, section structure, skills relevance, experience clarity, education details, measurable achievements, and action verbs usage.\n2) A brief summary of strengths\n3) Key skills identified\n4) Areas for improvement\n5) Suggested internship domains\n\nYou MUST start your response with exactly this format on the first line:\nATS_SCORE: <number>\n\nThen continue with the rest of your analysis in markdown format." },
+            { role: "user", content: `Analyze this resume for ATS compatibility and career advice:\n\n${resume_text}` },
           ],
         }),
       });
