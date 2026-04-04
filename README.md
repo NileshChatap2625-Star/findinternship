@@ -49,21 +49,21 @@ The system intelligently recommends internships based on user skills, resume con
 
 
 User Login  
-↓  
+   ↓  
 Upload Resume  
-↓  
+   ↓  
 AI Analysis  
-↓  
+   ↓  
 ATS Score  
-↓  
+   ↓  
 Get Matched Internships  
-↓  
+  ↓  
 Apply  
-↓  
+  ↓  
 Admin Review  
-↓  
+  ↓  
 Offer Letter  
-↓  
+  ↓  
 Internship Assigned  
 
 
@@ -71,20 +71,18 @@ Internship Assigned
 
 ## 🏗️ System Architecture
 
-## 🏗️ System Architecture
-
 User (Student/Admin)  
-↓  
+       ↓  
 Frontend (React - Lovable)  
-↓  
+       ↓  
 Backend (Supabase)  
-↓  
+       ↓  
 Database (PostgreSQL)  
-↓  
+       ↓  
 AI Engine (ATS + Recommendation)  
-↓  
+      ↓  
 Admin Panel → Offer System  
-↓  
+      ↓  
 Cloud Deployment (Lovable & vercel)  
 
 ---
