@@ -46,29 +46,46 @@ The system intelligently recommends internships based on user skills, resume con
 ---
 
 ## 🔄 Process Flow
-User Login → Upload Resume → AI Analysis → ATS Score  
-→ Get Matched Internships → Apply → Admin Review  
-→ Offer Letter → Internship Assigned
+
+
+User Login  
+↓  
+Upload Resume  
+↓  
+AI Analysis  
+↓  
+ATS Score  
+↓  
+Get Matched Internships  
+↓  
+Apply  
+↓  
+Admin Review  
+↓  
+Offer Letter  
+↓  
+Internship Assigned  
 
 
 ---
 
 ## 🏗️ System Architecture
 
-User (Student/Admin)
-        ↓
-Frontend (React - Lovable)
-        ↓
-Backend (Supabase)
-        ↓
-Database (PostgreSQL)
-        ↓
-AI Engine (ATS + Recommendation)
-        ↓
-Admin Panel → Offer System
-        ↓
-Cloud Deployment (Lovable )       
+## 🏗️ System Architecture
 
+User (Student/Admin)  
+↓  
+Frontend (React - Lovable)  
+↓  
+Backend (Supabase)  
+↓  
+Database (PostgreSQL)  
+↓  
+AI Engine (ATS + Recommendation)  
+↓  
+Admin Panel → Offer System  
+↓  
+Cloud Deployment (Lovable & vercel)  
 
 ---
 
@@ -86,7 +103,7 @@ Cloud Deployment (Lovable )
 - Google Gemini API (optional)  
 
 ### ☁️ Deployment
-- Lovable Platform (Full-stack AI builder)  
+- Lovable & vercel Platform (Full-stack AI builder)  
 
 ---
 
