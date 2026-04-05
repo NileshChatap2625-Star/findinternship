@@ -107,7 +107,7 @@ Cloud Deployment (Lovable & vercel)
 
 ## 🌐 Live Demo (MVP)
 
-👉 https://findinternship.lovable.app  
+👉 https://findinternship.vercel.app)  
 
 ---
 
