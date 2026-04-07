@@ -140,51 +140,50 @@
 ## 🏗️ System Architecture
 
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com/?font=Poppins&size=22&duration=2200&pause=700&center=true&vCenter=true&width=700&lines=Scalable+AI+System+Architecture;Frontend+Backend+AI+Integration;Smart+Internship+Platform&color=38BDF8,8338EC,06D6A0">
+  <img src="https://readme-typing-svg.herokuapp.com/?font=Poppins&size=22&duration=2200&pause=700&center=true&vCenter=true&width=750&lines=Scalable+AI+System+Architecture;Frontend+Backend+AI+Integration;Smart+Internship+Platform&color=38BDF8,8338EC,06D6A0">
 </p>
 
 <p align="center">
-  <svg width="420" height="420" viewBox="0 0 420 420">
+  <svg width="500" height="500" viewBox="0 0 500 500">
 
     <!-- Center -->
-    <circle cx="210" cy="210" r="60" fill="#0F172A"/>
-    <text x="210" y="215" text-anchor="middle" fill="#38BDF8" font-size="14">🧠 AI Engine</text>
+    <circle cx="250" cy="250" r="70" fill="#0F172A"/>
+    <text x="250" y="255" text-anchor="middle" fill="#38BDF8" font-size="16">AI Engine</text>
 
     <!-- Top -->
-    <circle cx="210" cy="60" r="45" fill="#1E293B"/>
-    <text x="210" y="65" text-anchor="middle" fill="#06D6A0" font-size="10">Frontend</text>
+    <circle cx="250" cy="80" r="50" fill="#1E293B"/>
+    <text x="250" y="85" text-anchor="middle" fill="#06D6A0" font-size="12">Frontend</text>
 
     <!-- Right -->
-    <circle cx="360" cy="210" r="45" fill="#1E293B"/>
-    <text x="360" y="215" text-anchor="middle" fill="#FF6B6B" font-size="10">Backend</text>
+    <circle cx="420" cy="250" r="50" fill="#1E293B"/>
+    <text x="420" y="255" text-anchor="middle" fill="#FF6B6B" font-size="12">Backend</text>
 
     <!-- Bottom -->
-    <circle cx="210" cy="360" r="45" fill="#1E293B"/>
-    <text x="210" y="365" text-anchor="middle" fill="#FFD166" font-size="10">Database</text>
+    <circle cx="250" cy="420" r="50" fill="#1E293B"/>
+    <text x="250" y="425" text-anchor="middle" fill="#FFD166" font-size="12">Database</text>
 
     <!-- Left -->
-    <circle cx="60" cy="210" r="45" fill="#1E293B"/>
-    <text x="60" y="215" text-anchor="middle" fill="#8338EC" font-size="10">User</text>
+    <circle cx="80" cy="250" r="50" fill="#1E293B"/>
+    <text x="80" y="255" text-anchor="middle" fill="#8338EC" font-size="12">User</text>
 
-    <!-- Diagonal 1 -->
-    <circle cx="330" cy="90" r="40" fill="#1E293B"/>
-    <text x="330" y="95" text-anchor="middle" fill="#00C2FF" font-size="9">Admin</text>
+    <!-- Top Right -->
+    <circle cx="380" cy="120" r="45" fill="#1E293B"/>
+    <text x="380" y="125" text-anchor="middle" fill="#00C2FF" font-size="11">Admin</text>
 
-    <!-- Diagonal 2 -->
-    <circle cx="90" cy="330" r="40" fill="#1E293B"/>
-    <text x="90" y="335" text-anchor="middle" fill="#06D6A0" font-size="9">Cloud</text>
+    <!-- Bottom Left -->
+    <circle cx="120" cy="380" r="45" fill="#1E293B"/>
+    <text x="120" y="385" text-anchor="middle" fill="#06D6A0" font-size="11">Cloud</text>
 
     <!-- Lines -->
-    <line x1="210" y1="150" x2="210" y2="105" stroke="#38BDF8"/>
-    <line x1="270" y1="210" x2="315" y2="210" stroke="#38BDF8"/>
-    <line x1="210" y1="270" x2="210" y2="315" stroke="#38BDF8"/>
-    <line x1="150" y1="210" x2="105" y2="210" stroke="#38BDF8"/>
-    <line x1="250" y1="170" x2="300" y2="120" stroke="#38BDF8"/>
-    <line x1="170" y1="250" x2="120" y2="300" stroke="#38BDF8"/>
+    <line x1="250" y1="180" x2="250" y2="130" stroke="#38BDF8" stroke-width="2"/>
+    <line x1="320" y1="250" x2="370" y2="250" stroke="#38BDF8" stroke-width="2"/>
+    <line x1="250" y1="320" x2="250" y2="370" stroke="#38BDF8" stroke-width="2"/>
+    <line x1="180" y1="250" x2="130" y2="250" stroke="#38BDF8" stroke-width="2"/>
+    <line x1="300" y1="200" x2="350" y2="150" stroke="#38BDF8" stroke-width="2"/>
+    <line x1="200" y1="300" x2="150" y2="350" stroke="#38BDF8" stroke-width="2"/>
 
   </svg>
-</p>l)  
-
+</p>
 ---
 ## 🛠️ Tech Stack
 
