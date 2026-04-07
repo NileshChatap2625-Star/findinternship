@@ -1,6 +1,21 @@
 # 🚀 FindInternship – AI Powered Internship Finder
 
-> An intelligent AI-driven platform that helps students find relevant internships using resume analysis, ATS scoring, and personalized recommendations.
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com/?lines=AI-driven+Internship+Platform;Analyze+Resume+%26+Calculate+ATS+Score;Get+Personalized+Internship+Recommendations&center=true&width=800&height=50">
+</p>
+
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com/?lines=AI+Powered+Internship+Finder;Resume+Analysis+%7C+ATS+Score+%7C+Smart+Matching;Find+the+Right+Internship+Faster&center=true&width=750&height=50">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/AI-Resume%20Analysis-blueviolet?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/ATS-Real--Time%20Score-success?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Smart-Matching-orange?style=for-the-badge"/>
+</p>
+
+
+
 
 ---
 
