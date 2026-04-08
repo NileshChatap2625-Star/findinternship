@@ -177,25 +177,28 @@
 
 <p align="center">
 
-<img src="https://img.shields.io/badge/Frontend-React.js-61DAFB?style=for-the-badge&logo=react&logoColor=black"/>
-<img src="https://img.shields.io/badge/UI-HTML%20%7C%20CSS%20%7C%20JS-orange?style=for-the-badge&logo=html5"/>
+<!-- Frontend -->
+<img src="https://img.shields.io/badge/⚛️%20Frontend-React.js-61DAFB?style=for-the-badge&logo=react&logoColor=black"/>
+<img src="https://img.shields.io/badge/🎨%20UI-HTML%20%7C%20CSS%20%7C%20JS-FF9F1C?style=for-the-badge&logo=html5"/>
 
 <br><br>
 
-<img src="https://img.shields.io/badge/Backend-Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=black"/>
-<img src="https://img.shields.io/badge/Database-PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white"/>
+<!-- Backend -->
+<img src="https://img.shields.io/badge/⚙️%20Backend-Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=black"/>
+<img src="https://img.shields.io/badge/🗄️%20Database-PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white"/>
 
 <br><br>
 
-<img src="https://img.shields.io/badge/AI-Resume%20Analysis-FF6B6B?style=for-the-badge&logo=python"/>
-<img src="https://img.shields.io/badge/AI-Gemini%20API-8338EC?style=for-the-badge&logo=google"/>
+<!-- AI -->
+<img src="https://img.shields.io/badge/🧠%20AI-Resume%20Analysis-FF006E?style=for-the-badge&logo=python&logoColor=white"/>
+<img src="https://img.shields.io/badge/🤖%20AI-Gemini%20API-8338EC?style=for-the-badge&logo=google"/>
 
 <br><br>
 
-<img src="https://img.shields.io/badge/Deployment-Vercel-000000?style=for-the-badge&logo=vercel"/>
+<!-- Deployment -->
+<img src="https://img.shields.io/badge/🚀%20Deployment-Vercel-000000?style=for-the-badge&logo=vercel"/>
 
 </p>
----
 
 ## 🌐 Live Demo & Repository
 
