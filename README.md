@@ -137,49 +137,112 @@
 
 ---
 
-## 🏗️ System Architecture
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI System Architecture</title>
 
-<p align="center">
+<style>
+body {
+  background: #020617;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: Arial;
+}
+
+/* Nodes */
+.node {
+  fill: #1e293b;
+  stroke: #38bdf8;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 10px #38bdf8);
+  transition: 0.3s;
+}
+
+.node:hover {
+  fill: #0ea5e9;
+  transform: scale(1.1);
+}
+
+/* Center pulse */
+.center {
+  fill: #0f172a;
+  stroke: #22c55e;
+  stroke-width: 3;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { r: 65; opacity: 0.7; }
+  50% { r: 75; opacity: 1; }
+  100% { r: 65; opacity: 0.7; }
+}
+
+/* Animated lines */
+.line {
+  stroke: #38bdf8;
+  stroke-width: 2;
+  stroke-dasharray: 5,5;
+  animation: dash 3s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+/* Text */
+text {
+  fill: white;
+  font-size: 12px;
+  text-anchor: middle;
+}
+</style>
+</head>
+
+<body>
+
 <svg width="500" height="500" viewBox="0 0 500 500">
 
-<!-- Center -->
-<circle cx="250" cy="250" r="70" fill="#0F172A"/>
-<text x="250" y="255" text-anchor="middle" fill="#38BDF8" font-size="16">AI Engine</text>
+<!-- Center AI -->
+<circle cx="250" cy="250" r="70" class="center"/>
+<text x="250" y="255">AI Engine</text>
 
-<!-- Top -->
-<circle cx="250" cy="80" r="50" fill="#1E293B"/>
-<text x="250" y="85" text-anchor="middle" fill="#06D6A0" font-size="12">Frontend</text>
+<!-- Nodes -->
+<circle cx="250" cy="80" r="40" class="node"/>
+<text x="250" y="85">Frontend</text>
 
-<!-- Right -->
-<circle cx="420" cy="250" r="50" fill="#1E293B"/>
-<text x="420" y="255" text-anchor="middle" fill="#FF6B6B" font-size="12">Backend</text>
+<circle cx="420" cy="250" r="40" class="node"/>
+<text x="420" y="255">Backend</text>
 
-<!-- Bottom -->
-<circle cx="250" cy="420" r="50" fill="#1E293B"/>
-<text x="250" y="425" text-anchor="middle" fill="#FFD166" font-size="12">Database</text>
+<circle cx="250" cy="420" r="40" class="node"/>
+<text x="250" y="425">Database</text>
 
-<!-- Left -->
-<circle cx="80" cy="250" r="50" fill="#1E293B"/>
-<text x="80" y="255" text-anchor="middle" fill="#8338EC" font-size="12">User</text>
+<circle cx="80" cy="250" r="40" class="node"/>
+<text x="80" y="255">User</text>
 
-<!-- Top Right -->
-<circle cx="380" cy="120" r="45" fill="#1E293B"/>
-<text x="380" y="125" text-anchor="middle" fill="#00C2FF" font-size="11">Admin</text>
+<circle cx="380" cy="120" r="35" class="node"/>
+<text x="380" y="125">Admin</text>
 
-<!-- Bottom Left -->
-<circle cx="120" cy="380" r="45" fill="#1E293B"/>
-<text x="120" y="385" text-anchor="middle" fill="#06D6A0" font-size="11">Cloud</text>
+<circle cx="120" cy="380" r="35" class="node"/>
+<text x="120" y="385">Cloud</text>
 
-<!-- Lines -->
-<line x1="250" y1="180" x2="250" y2="130" stroke="#38BDF8" stroke-width="2"/>
-<line x1="320" y1="250" x2="370" y2="250" stroke="#38BDF8" stroke-width="2"/>
-<line x1="250" y1="320" x2="250" y2="370" stroke="#38BDF8" stroke-width="2"/>
-<line x1="180" y1="250" x2="130" y2="250" stroke="#38BDF8" stroke-width="2"/>
-<line x1="300" y1="200" x2="350" y2="150" stroke="#38BDF8" stroke-width="2"/>
-<line x1="200" y1="300" x2="150" y2="350" stroke="#38BDF8" stroke-width="2"/>
+<!-- Animated Connections -->
+<line x1="250" y1="180" x2="250" y2="120" class="line"/>
+<line x1="320" y1="250" x2="380" y2="250" class="line"/>
+<line x1="250" y1="320" x2="250" y2="380" class="line"/>
+<line x1="180" y1="250" x2="120" y2="250" class="line"/>
+<line x1="300" y1="200" x2="360" y2="140" class="line"/>
+<line x1="200" y1="300" x2="140" y2="360" class="line"/>
 
 </svg>
-</p>
+
+</body>
+</html>
 ## 🛠️ Tech Stack
 
 <p align="center">
