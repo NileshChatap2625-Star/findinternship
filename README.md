@@ -136,7 +136,7 @@
 
 
 ---
-🏗️ System Architecture
+   ## 🏗️ System Architecture
             👤 User
               │
               ▼
@@ -146,8 +146,8 @@
      ⚙️ Backend (Supabase)
         │            │
         ▼            ▼
-🗄️ Database     🤖 AI Engine
-(PostgreSQL)   (Resume Analysis)
+ 🗄️ Database      🤖 AI Engine
+  (PostgreSQL)     (Resume Analysis)
         │            │
         └──────┬─────┘
                ▼
@@ -156,31 +156,14 @@
                ▼
         📩 Internship Application
         
+    ---    
             
 🌐 Live Demo & Code
 🚀 Live: https://findinternship.vercel.app
 💻 GitHub: https://github.com/NileshChatap2625-Star/findinternship
 ---
 
-## 🎯 Unique Selling Proposition (USP)
-
-<p align="center">
-  <span style="
-    background: linear-gradient(90deg,#38BDF8,#8338EC,#06D6A0);
-    -webkit-background-clip: text;
-    color: transparent;
-    font-size:20px;
-    font-weight:bold;
-  ">
-    🚀 AI-powered platform delivering real-time ATS scoring & personalized internship matching
-  </span>
-</p>
-
-<p align="center">
-  ⚡ Faster Decisions &nbsp; • &nbsp; 🎯 Better Matches &nbsp; • &nbsp; 🧠 Smarter Career Growth
-</p>
 ---
-
 ## 🚀 Future Scope
 
 🚀 Future Scope
@@ -197,7 +180,7 @@
 🆓 Built using free tools
 💸 Low development cost
 ☁️ Cloud-based
-
+---
 ## 📊 Project Impact
 
 📊 Impact
@@ -206,7 +189,7 @@
 🎯 Increases selection chances
 🤖 Smarter career decisions
 
-
+---
 ## 👨‍💻 Author
 
 **Nilesh Chatap**
