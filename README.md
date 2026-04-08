@@ -145,13 +145,8 @@
               ▼
      ⚙️ Backend (Supabase)
         │            │
+🗄️ Database          🤖 AI Engine
 
-        
-  🗄️ Database      🤖 AI Engine
-   (PostgreSQL)     (Resume Analysis)
-   
-        │            │
-        
         └──────┬─────┘
                ▼
                
@@ -201,9 +196,13 @@
 ## 📊 Project Impact
 
 📊 Impact
+
 ⏳ Saves time
+
 📄 Improves resume quality
+
 🎯 Increases selection chances
+
 🤖 Smarter career decisions
 
 ---
