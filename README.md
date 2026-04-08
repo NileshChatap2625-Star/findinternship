@@ -136,55 +136,30 @@
 
 
 ---
-graph TD
-U[👤 User] --> F[⚛️ Frontend]
-F --> B[⚙️ Backend]
-B --> D[(🗄️ Database)]
-B --> AI[🤖 AI Engine]
-A[👨‍💼 Admin] --> B
-C[☁️ Cloud] --> B
-## 🛠️ Tech Stack
-
-<p align="center">
-
-<!-- Row 1 -->
-<img src="https://img.shields.io/badge/⚛️%20FRONTEND-REACT.JS-61DAFB?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/🎨%20UI-HTML%20|%20CSS%20|%20JS-FF9F1C?style=for-the-badge"/>
-
-<br><br>
-
-<!-- Row 2 -->
-<img src="https://img.shields.io/badge/⚙️%20BACKEND-SUPABASE-3ECF8E?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/🗄️%20DATABASE-POSTGRESQL-336791?style=for-the-badge"/>
-
-<br><br>
-
-<!-- Row 3 -->
-<img src="https://img.shields.io/badge/🧠%20AI-RESUME%20ANALYSIS-FF006E?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/🤖%20AI-GEMINI%20API-8338EC?style=for-the-badge"/>
-
-<br><br>
-
-<!-- Row 4 -->
-<img src="https://img.shields.io/badge/🚀%20DEPLOYMENT-VERCEL-000000?style=for-the-badge"/>
-
-</p>
-
-## 🌐 Live Demo & Repository
-
-<p align="center">
-
-<a href="https://findinternship.vercel.app" target="_blank">
-  <img src="https://img.shields.io/badge/🚀%20Live%20Demo-Visit%20Now-00C2FF?style=for-the-badge&logo=vercel&logoColor=white"/>
-</a>
-
-<br><br>
-
-<a href="https://github.com/NileshChatap2625-Star/findinternship" target="_blank">
-  <img src="https://img.shields.io/badge/💻%20GitHub%20Repo-View%20Code-181717?style=for-the-badge&logo=github"/>
-</a>
-
-</p>
+🏗️ System Architecture
+            👤 User
+              │
+              ▼
+      💻 Frontend (React.js)
+              │
+              ▼
+     ⚙️ Backend (Supabase)
+        │            │
+        ▼            ▼
+🗄️ Database     🤖 AI Engine
+(PostgreSQL)   (Resume Analysis)
+        │            │
+        └──────┬─────┘
+               ▼
+        📊 ATS Score & Matching
+               │
+               ▼
+        📩 Internship Application
+        
+            
+🌐 Live Demo & Code
+🚀 Live: https://findinternship.vercel.app
+💻 GitHub: https://github.com/NileshChatap2625-Star/findinternship
 ---
 
 ## 🎯 Unique Selling Proposition (USP)
@@ -208,57 +183,29 @@ C[☁️ Cloud] --> B
 
 ## 🚀 Future Scope
 
-<p align="center">
-  <span style="
-    background: linear-gradient(90deg,#00F5D4,#8338EC,#FF6B6B,#FFD60A);
-    -webkit-background-clip: text;
-    color: transparent;
-    font-size:20px;
-    font-weight:bold;
-  ">
-    🚀 Innovating the Future of Internship Discovery with AI
-  </span>
-</p>
-
-<p align="center">
-  📱 Mobile App &nbsp; • &nbsp; 🔔 Smart Alerts &nbsp; • &nbsp; 🎯 Skill Gap Analysis  
-  <br><br>
-  🤖 AI Chatbot &nbsp; • &nbsp; ⚡ Auto Apply &nbsp; • &nbsp; 📊 Resume Optimization
-</p>
-
+🚀 Future Scope
+📱 Mobile App
+🔔 Internship Alerts
+🎯 Skill Gap Analysis
+🤖 AI Career Chatbot
+⚡ One-click Apply
 ---
 
 ## 💰 Cost Efficiency
 
-<p align="center">
-  <table>
-    <tr>
-      <td align="center">🆓<br><b>Free Tools</b><br>Scalable Technologies</td>
-      <td align="center">💸<br><b>Low Cost</b><br>Student Friendly</td>
-      <td align="center">☁️<br><b>Cloud</b><br>Fast Deployment</td>
-    </tr>
-  </table>
-</p>
----
+💰 Cost Efficiency
+🆓 Built using free tools
+💸 Low development cost
+☁️ Cloud-based
 
 ## 📊 Project Impact
 
-<p align="center">
-  <span style="
-    background: linear-gradient(90deg,#00F5D4,#8338EC,#FF6B6B,#FFD60A);
-    -webkit-background-clip: text;
-    color: transparent;
-    font-size:20px;
-    font-weight:bold;
-  ">
-    🚀 Transforming Internship Discovery with AI Efficiency
-  </span>
-</p>
+📊 Impact
+⏳ Saves time
+📄 Improves resume quality
+🎯 Increases selection chances
+🤖 Smarter career decisions
 
-<p align="center">
-  ⏳ Save Time &nbsp; • &nbsp; 📄 Better Resume &nbsp; • &nbsp; 🎯 Higher Selection Rate &nbsp; • &nbsp; 🤖 Smart Career Guidance
-</p>
----
 
 ## 👨‍💻 Author
 
