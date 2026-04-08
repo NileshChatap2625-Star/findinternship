@@ -145,12 +145,16 @@
               ▼
      ⚙️ Backend (Supabase)
         │            │
-        ▼            ▼
- 🗄️ Database      🤖 AI Engine
-  (PostgreSQL)     (Resume Analysis)
+
+        
+  🗄️ Database      🤖 AI Engine
+   (PostgreSQL)     (Resume Analysis)
+   
         │            │
+        
         └──────┬─────┘
                ▼
+               
         📊 ATS Score & Matching
                │
                ▼
@@ -159,27 +163,40 @@
     ---    
             
 🌐 Live Demo & Code
+
 🚀 Live: https://findinternship.vercel.app
+
 💻 GitHub: https://github.com/NileshChatap2625-Star/findinternship
+
 ---
 
 ---
 ## 🚀 Future Scope
 
 🚀 Future Scope
+
 📱 Mobile App
+
 🔔 Internship Alerts
+
 🎯 Skill Gap Analysis
+
 🤖 AI Career Chatbot
+
 ⚡ One-click Apply
+
 ---
 
 ## 💰 Cost Efficiency
 
 💰 Cost Efficiency
+
 🆓 Built using free tools
+
 💸 Low development cost
+
 ☁️ Cloud-based
+
 ---
 ## 📊 Project Impact
 
